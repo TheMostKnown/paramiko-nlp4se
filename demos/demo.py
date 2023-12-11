@@ -28,6 +28,8 @@ import socket
 import sys
 import time
 import traceback
+# ??question: why the input module imported as third party import and not in the usual way when standard library import is used?
+# question??
 from paramiko.py3compat import input
 
 import paramiko
@@ -38,6 +40,8 @@ except ImportError:
     from . import interactive
 
 
+# ??question: what is the type of transport parameter?
+# question??
 def agent_auth(transport, username):
     """
     Attempt to authenticate to the given transport using any of the private
@@ -45,13 +49,19 @@ def agent_auth(transport, username):
     """
 
     agent = paramiko.Agent()
+    # ??question: what is the default value of agent_keys?
+    # question??
     agent_keys = agent.get_keys()
     if len(agent_keys) == 0:
         return
 
+    # ??question: what is the type of key variable?
+    # question??
     for key in agent_keys:
         print("Trying ssh-agent key %s" % hexlify(key.get_fingerprint()))
         try:
+            # ??question: what is the successful result of auth_publickey function?
+            # question??
             transport.auth_publickey(username, key)
             print("... success!")
             return
@@ -61,6 +71,10 @@ def agent_auth(transport, username):
 
 def manual_auth(username, hostname):
     default_auth = "p"
+    # ??question: what is the default value of auth?
+    # question??
+    # ??question: on what condition the length of auth is equal to 0?
+    # question??
     auth = input(
         "Auth by (p)assword, (r)sa key, or (d)ss key? [%s] " % default_auth
     )
@@ -76,7 +90,11 @@ def manual_auth(username, hostname):
             key = paramiko.RSAKey.from_private_key_file(path)
         except paramiko.PasswordRequiredException:
             password = getpass.getpass("RSA key password: ")
+            # ??question: what is the value of key if the incorrect password is submitted?
+            # question??
             key = paramiko.RSAKey.from_private_key_file(path, password)
+        # ??question: where is the declaration of t?
+        # question??
         t.auth_publickey(username, key)
     elif auth == "d":
         default_path = os.path.join(os.environ["HOME"], ".ssh", "id_dsa")
@@ -95,6 +113,10 @@ def manual_auth(username, hostname):
 
 
 # setup logging
+# ??question: does the log_to_file function creates the empty logfile or writes in the existing one?
+# question??
+# ??question: is it possible to select a custom logfile name by user input in log_to_file?
+# question??
 paramiko.util.log_to_file("demo.log")
 
 username = ""
@@ -107,6 +129,8 @@ else:
 if len(hostname) == 0:
     print("*** Hostname required.")
     sys.exit(1)
+# ??question: is it possible to select the custom port value by user input in port variable?
+# question??
 port = 22
 if hostname.find(":") >= 0:
     hostname, portstr = hostname.split(":")
@@ -114,6 +138,8 @@ if hostname.find(":") >= 0:
 
 # now connect
 try:
+    # ??question: what is the default value of sock?
+    # question??
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect((hostname, port))
 except Exception as e:
@@ -124,6 +150,8 @@ except Exception as e:
 try:
     t = paramiko.Transport(sock)
     try:
+        # ??question: what is the successful result of start_client function?
+        # question??
         t.start_client()
     except paramiko.SSHException:
         print("*** SSH negotiation failed.")
@@ -156,6 +184,8 @@ try:
 
     # get username
     if username == "":
+        # ??question: what is the default value of default_username?
+        # question??
         default_username = getpass.getuser()
         username = input("Username [%s]: " % default_username)
         if len(username) == 0:
@@ -169,6 +199,8 @@ try:
         t.close()
         sys.exit(1)
 
+    # ??question: what is the type of chan?
+    # question??
     chan = t.open_session()
     chan.get_pty()
     chan.invoke_shell()
