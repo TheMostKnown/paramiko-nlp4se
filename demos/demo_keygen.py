@@ -62,6 +62,8 @@ if __name__ == "__main__":
     phrase = None
     pfunc = None
 
+    # ??question: what is the default value of parser? 
+    # question??
     parser = OptionParser(usage=usage)
     parser.add_option(
         "-t",
@@ -162,6 +164,8 @@ if __name__ == "__main__":
     if options.verbose:
         print("done.")
 
+    # ??question: what is the result of get_fingerprint() function? 
+    # question??
     hash = u(hexlify(pub.get_fingerprint()))
     print(
         "Fingerprint: %d %s %s.pub (%s)"
