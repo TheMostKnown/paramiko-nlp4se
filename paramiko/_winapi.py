@@ -31,6 +31,8 @@ def format_system_message(errno):
     source = None
     message_id = errno
     language_id = 0
+    # ??question: what is the default value of result_buffer?
+    # question??
     result_buffer = ctypes.wintypes.LPWSTR()
     buffer_size = 0
     arguments = None
@@ -46,6 +48,8 @@ def format_system_message(errno):
     # note the following will cause an infinite loop if GetLastError
     #  repeatedly returns an error that cannot be formatted, although
     #  this should not happen.
+    # ??question: what is the result of handle_nonzero_success?
+    # question??
     handle_nonzero_success(bytes)
     message = result_buffer.value
     ctypes.windll.kernel32.LocalFree(result_buffer)
@@ -129,7 +133,8 @@ ctypes.windll.kernel32.LocalFree.argtypes = (ctypes.wintypes.HLOCAL,)
 #####################
 # jaraco.windows.mmap
 
-
+# ??question: what is the purpose of MemoryMap?
+# question??
 class MemoryMap:
     """
     A memory map object which can have security attributes overridden.
@@ -183,6 +188,8 @@ class MemoryMap:
         Read n bytes from mapped view.
         """
         out = ctypes.create_string_buffer(n)
+        # ??question: what is the type of source?
+        # question??
         source = self.view + self.pos
         length = ctypes.c_size_t(n)
         ctypes.windll.kernel32.RtlMoveMemory(out, source, length)
@@ -344,7 +351,10 @@ ctypes.windll.advapi32.SetSecurityDescriptorOwner.argtypes = (
 #########################
 # jaraco.windows.security
 
-
+# ??question: what is the type of information_class?
+# question??
+# ??question: what is the return type of GetTokenInformation?
+# question??
 def GetTokenInformation(token, information_class):
     """
     Given a token, get the token information for it.
