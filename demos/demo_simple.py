@@ -77,8 +77,12 @@ if not UseGSSAPI and not DoGSSAPIKeyExchange:
 
 # now, connect and use paramiko Client to negotiate SSH2 across the connection
 try:
+    # ??question: what is the default value of client?
+    # question??
     client = paramiko.SSHClient()
     client.load_system_host_keys()
+    # ??question: what is the result of set_missing_host_key_policy?
+    # question??    
     client.set_missing_host_key_policy(paramiko.WarningPolicy())
     print("*** Connecting...")
     if not UseGSSAPI and not DoGSSAPIKeyExchange:
@@ -102,6 +106,8 @@ try:
     chan = client.invoke_shell()
     print(repr(client.get_transport()))
     print("*** Here we go!\n")
+    # ??question: what is the result of interactive_shell?
+    # question??    
     interactive.interactive_shell(chan)
     chan.close()
     client.close()
