@@ -36,6 +36,10 @@ paramiko.util.log_to_file("demo_server.log")
 host_key = paramiko.RSAKey(filename="test_rsa.key")
 # host_key = paramiko.DSSKey(filename='test_dss.key')
 
+# ??question: what is the result of hexlify function? 
+# question??
+# ??question: what is the result of u function? 
+# question??
 print("Read key: " + u(hexlify(host_key.get_fingerprint())))
 
 
@@ -50,10 +54,16 @@ class Server(paramiko.ServerInterface):
     )
     good_pub_key = paramiko.RSAKey(data=decodebytes(data))
 
+    # ??question: what is the type of self.event? 
+    # question??
     def __init__(self):
         self.event = threading.Event()
 
+    # ??question: what is the return type of check_channel_request? 
+    # question??
     def check_channel_request(self, kind, chanid):
+        # ??question: what are the other possible values of kind? 
+        # question??
         if kind == "session":
             return paramiko.OPEN_SUCCEEDED
         return paramiko.OPEN_FAILED_ADMINISTRATIVELY_PROHIBITED
@@ -69,6 +79,10 @@ class Server(paramiko.ServerInterface):
             return paramiko.AUTH_SUCCESSFUL
         return paramiko.AUTH_FAILED
 
+    # ??question: what is the purpose of check_auth_gssapi_with_mic?
+    # question??
+    # ??question: what is the difference between check_auth_gssapi_with_mic and check_auth_gssapi_keyex?
+    # question??    
     def check_auth_gssapi_with_mic(
         self, username, gss_authenticated=paramiko.AUTH_FAILED, cc_file=None
     ):
@@ -100,13 +114,19 @@ class Server(paramiko.ServerInterface):
     def enable_auth_gssapi(self):
         return True
 
+    # ??question: why get_allowed_auths contains an unused parameter username?
+    # question??   
     def get_allowed_auths(self, username):
         return "gssapi-keyex,gssapi-with-mic,password,publickey"
 
     def check_channel_shell_request(self, channel):
+        # ??question: what is the result of self.event.set()?
+        # question?? 
         self.event.set()
         return True
 
+    # ??question: what is the purpose of check_channel_pty_request?
+    # question??
     def check_channel_pty_request(
         self, channel, term, width, height, pixelwidth, pixelheight, modes
     ):
@@ -118,6 +138,8 @@ DoGSSAPIKeyExchange = True
 # now connect
 try:
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    # ??question: what is the result of sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)?
+    # question?? 
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     sock.bind(("", 2200))
 except Exception as e:
@@ -140,6 +162,8 @@ try:
     t = paramiko.Transport(client, gss_kex=DoGSSAPIKeyExchange)
     t.set_gss_host(socket.getfqdn(""))
     try:
+        # ??question: what is the result of t.load_server_moduli() without exceptions?
+        # question??
         t.load_server_moduli()
     except:
         print("(Failed to load moduli -- gex will be unsupported.)")
@@ -153,6 +177,8 @@ try:
         sys.exit(1)
 
     # wait for auth
+    # ??question: what is default value of chan?
+    # question??
     chan = t.accept(20)
     if chan is None:
         print("*** No channel.")
