@@ -58,9 +58,13 @@ class Handler(SocketServer.BaseRequestHandler):
             chan = self.ssh_transport.open_channel(
                 "direct-tcpip",
                 (self.chain_host, self.chain_port),
+                # ??question: what is the result of getpeername?
+                # question??
                 self.request.getpeername(),
             )
         except Exception as e:
+            # ??question: what is the result of verbose?
+            # question??
             verbose(
                 "Incoming request to %s:%d failed: %s"
                 % (self.chain_host, self.chain_port, repr(e))
@@ -94,6 +98,8 @@ class Handler(SocketServer.BaseRequestHandler):
                     break
                 self.request.send(data)
 
+        # ??question: what is the type of peername?
+        # question??
         peername = self.request.getpeername()
         chan.close()
         self.request.close()
