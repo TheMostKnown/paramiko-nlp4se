@@ -45,6 +45,8 @@ extras_require = {
     "ed25519": [],
 }
 everything = []
+# ??question: what is the type of subdeps?
+# question??
 for subdeps in extras_require.values():
     everything.extend(subdeps)
 extras_require["all"] = everything
