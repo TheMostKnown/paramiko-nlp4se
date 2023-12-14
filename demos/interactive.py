@@ -31,6 +31,8 @@ except ImportError:
     has_termios = False
 
 
+# ??question: what is the result of interactive_shell?
+# question??
 def interactive_shell(chan):
     if has_termios:
         posix_shell(chan)
@@ -41,6 +43,8 @@ def interactive_shell(chan):
 def posix_shell(chan):
     import select
 
+    # ??question: what is default value of oldtty?
+    # question??
     oldtty = termios.tcgetattr(sys.stdin)
     try:
         tty.setraw(sys.stdin.fileno())
