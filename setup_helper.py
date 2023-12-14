@@ -139,6 +139,8 @@ def make_tarball(
             tar.close()
 
     if compress and compress not in tarfile_compress_flag:
+        # ??question: what is the result of spawn function?
+        # question??
         spawn(
             [compress] + compress_flags[compress] + [archive_name],
             dry_run=dry_run,
