@@ -85,6 +85,8 @@ except IOError:
         print("*** Unable to open host keys file")
         host_keys = {}
 
+# ??question: what is the type of hostname?
+# question??
 if hostname in host_keys:
     hostkeytype = host_keys[hostname].keys()[0]
     hostkey = host_keys[hostname][hostkeytype]
@@ -102,6 +104,9 @@ try:
         gss_auth=UseGSSAPI,
         gss_kex=DoGSSAPIKeyExchange,
     )
+    
+    # ??question: what is the type of sftp?
+    # question??
     sftp = paramiko.SFTPClient.from_transport(t)
 
     # dirlist on remote host
