@@ -30,6 +30,11 @@ import time
 import traceback
 # ??question: why the input module imported as third party import and not in the usual way when standard library import is used?
 # question??
+""" 
+!!answer Python allows different ways of import modules. The standard way is possible here, but using third party import 
+helps to reduce the code length and repeatability as it is used rather often. answer!!
+"""
+
 from paramiko.py3compat import input
 
 import paramiko
@@ -42,6 +47,9 @@ except ImportError:
 
 # ??question: what is the type of transport parameter?
 # question??
+"""
+!!answer It has the type of ServiceRequestingTransport or Transport object defined in paramiko in file transport.py. answer!!  
+"""
 def agent_auth(transport, username):
     """
     Attempt to authenticate to the given transport using any of the private
@@ -51,17 +59,29 @@ def agent_auth(transport, username):
     agent = paramiko.Agent()
     # ??question: what is the default value of agent_keys?
     # question??
+    """
+    !!answer As it is defined in AgentSSH class which is inherited by Agent class is paramiko, get_keys() returnes the
+    a tuple of AgentKey objects representing keys available on the SSH agent. The default value of it is () which 
+    is actually an empty tuple. answer!!
+    """
     agent_keys = agent.get_keys()
     if len(agent_keys) == 0:
         return
 
     # ??question: what is the type of key variable?
     # question??
+    """
+    !!answer As agent_keys represents the tuple of AgentKey objects, the type of values in it will be AgentKey objects. answer!!
+    """
     for key in agent_keys:
         print("Trying ssh-agent key %s" % hexlify(key.get_fingerprint()))
         try:
             # ??question: what is the successful result of auth_publickey function?
             # question??
+            """
+            !!answer When finishing successfully, the auth_publickey function provides authentification to the server
+            using the private key and returns the list of auth types permissible for the next stage of authentication which is normally empty answer!!
+            """
             transport.auth_publickey(username, key)
             print("... success!")
             return
@@ -73,8 +93,15 @@ def manual_auth(username, hostname):
     default_auth = "p"
     # ??question: what is the default value of auth?
     # question??
+    """
+    !!answer The default value of auth after an empty input (which is the default input) is an empty string
+    but just after the input there is a condition whuch turnes auth itto the default_auth which is actually "p". answer!!
+    """
     # ??question: on what condition the length of auth is equal to 0?
     # question??
+    """
+    !!answer If the user submits an empty input ut makes an auth variable to be an empty string which length is equal to 0. answer!!
+    """
     auth = input(
         "Auth by (p)assword, (r)sa key, or (d)ss key? [%s] " % default_auth
     )
