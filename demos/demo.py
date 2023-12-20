@@ -80,7 +80,7 @@ def agent_auth(transport, username):
             # question??
             """
             !!answer When finishing successfully, the auth_publickey function provides authentification to the server
-            using the private key and returns the list of auth types permissible for the next stage of authentication which is normally empty answer!!
+            using the private key and returns the list of auth types permissible for the next stage of authentication which is normally empty. answer!!
             """
             transport.auth_publickey(username, key)
             print("... success!")
