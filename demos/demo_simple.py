@@ -79,10 +79,18 @@ if not UseGSSAPI and not DoGSSAPIKeyExchange:
 try:
     # ??question: what is the default value of client?
     # question??
+    """
+    !!answer client is an object of SSHClient class defined in paramiko/client.py. Its default values contain the default
+    values given to the object and defined in its __init__ function. answer!!
+    """
     client = paramiko.SSHClient()
     client.load_system_host_keys()
     # ??question: what is the result of set_missing_host_key_policy?
-    # question??    
+    # question?? 
+    """
+    !!answer This method gives the internal variable _policy the value given as the argument to the function.
+    It has no return value. answer!!
+    """
     client.set_missing_host_key_policy(paramiko.WarningPolicy())
     print("*** Connecting...")
     if not UseGSSAPI and not DoGSSAPIKeyExchange:
@@ -107,7 +115,10 @@ try:
     print(repr(client.get_transport()))
     print("*** Here we go!\n")
     # ??question: what is the result of interactive_shell?
-    # question??    
+    # question??
+    """
+    !!answer This function creates an interactive shell - posix or windows based on the operating system being used. answer!!
+    """
     interactive.interactive_shell(chan)
     chan.close()
     client.close()
