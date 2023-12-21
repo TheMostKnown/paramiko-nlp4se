@@ -36,10 +36,16 @@ paramiko.util.log_to_file("demo_server.log")
 host_key = paramiko.RSAKey(filename="test_rsa.key")
 # host_key = paramiko.DSSKey(filename='test_dss.key')
 
-# ??question: what is the result of hexlify function? 
+# ??question: what is the result of hexlify function?
 # question??
+"""
+!!answer This function returnes the hexadecimal representation of the binary data given as its argument. answer!!
+"""
 # ??question: what is the result of u function? 
 # question??
+"""
+!!answer The function returnes the Unicode-encoded string given as an argument to the function. answer!!
+"""
 print("Read key: " + u(hexlify(host_key.get_fingerprint())))
 
 
@@ -56,11 +62,18 @@ class Server(paramiko.ServerInterface):
 
     # ??question: what is the type of self.event? 
     # question??
+    """
+    !!answer The type of self.event is the object of threading.Event class defined by threading module. answer!!
+    """
     def __init__(self):
         self.event = threading.Event()
 
     # ??question: what is the return type of check_channel_request? 
     # question??
+    """
+    !!answer The function returnes an integer which means the result code of the function. The values used are
+    defined in paramiko/common.py. answer!!
+    """
     def check_channel_request(self, kind, chanid):
         # ??question: what are the other possible values of kind? 
         # question??
@@ -115,18 +128,30 @@ class Server(paramiko.ServerInterface):
         return True
 
     # ??question: why get_allowed_auths contains an unused parameter username?
-    # question??   
+    # question??
+    """
+    !!answer The function get_allowed_auths is a prt of class Server which implements a ServerInterface interface which is defined in peremiko/server.py
+    According to full interface implementation the class must implement all the functions with the arguments defined in that interface. answer!!
+    """
     def get_allowed_auths(self, username):
         return "gssapi-keyex,gssapi-with-mic,password,publickey"
 
     def check_channel_shell_request(self, channel):
         # ??question: what is the result of self.event.set()?
         # question?? 
+        """
+        !!answer This function sets an internal flag of the self.event object to True and do not return any value. answer!!
+        """
         self.event.set()
         return True
 
     # ??question: what is the purpose of check_channel_pty_request?
     # question??
+    """
+    !!answer According to the interface's documentation in paramiko/server.py check_channel_pty_request is used to determine 
+    if a pseudo-terminal of the given dimensions can be provided on the given channel. For this case, we always are assured that
+    it can be provided. answer!!
+    """
     def check_channel_pty_request(
         self, channel, term, width, height, pixelwidth, pixelheight, modes
     ):
@@ -164,6 +189,10 @@ try:
     try:
         # ??question: what is the result of t.load_server_moduli() without exceptions?
         # question??
+        """
+        !!answer The function is defined in paramiko/transport.py and loads a file of prime moduli for use in doing group-exchange key
+        negotiation in server mode. It returnes True if a moduli file was successfully loaded and False in the other case. answer!!
+        """
         t.load_server_moduli()
     except:
         print("(Failed to load moduli -- gex will be unsupported.)")
@@ -179,6 +208,11 @@ try:
     # wait for auth
     # ??question: what is default value of chan?
     # question??
+    """
+    !!anser According to the accept function's definition in paramiko/transport.py, it returnes the next channel opened by 
+    the client over this transport, in server mode. If no channel is opened before the given timeout, None is returned.
+    That's why the default value of chan will be None. answer!!
+    """
     chan = t.accept(20)
     if chan is None:
         print("*** No channel.")
