@@ -64,6 +64,9 @@ if __name__ == "__main__":
 
     # ??question: what is the default value of parser? 
     # question??
+    """
+    !!answer The default value of parser is the instance of OptionParser class. answer!!
+    """
     parser = OptionParser(usage=usage)
     parser.add_option(
         "-t",
@@ -166,6 +169,9 @@ if __name__ == "__main__":
 
     # ??question: what is the result of get_fingerprint() function? 
     # question??
+    """
+    !!answer This function returnes an MD5 fingerprint of the public part of the key. answer!!
+    """
     hash = u(hexlify(pub.get_fingerprint()))
     print(
         "Fingerprint: %d %s %s.pub (%s)"
