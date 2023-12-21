@@ -87,6 +87,11 @@ except IOError:
 
 # ??question: what is the type of hostname?
 # question??
+"""
+!!answer host keys is the instance of HostKeys class defined in paramiko/hostkeys.py. It emulates the dictioonary
+of { hostname: { keytype: PKey } }. And according to its implementation it itearates by its keys. That's why 
+hostname is a key of a dictionary-class HostKeys. answer!!
+"""
 if hostname in host_keys:
     hostkeytype = host_keys[hostname].keys()[0]
     hostkey = host_keys[hostname][hostkeytype]
@@ -107,6 +112,9 @@ try:
     
     # ??question: what is the type of sftp?
     # question??
+    """
+    !!answer sftp becomes an instance of SFTPClient object defined in paramiko/sftp_client.py. answer!!
+    """
     sftp = paramiko.SFTPClient.from_transport(t)
 
     # dirlist on remote host
