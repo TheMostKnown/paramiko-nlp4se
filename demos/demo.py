@@ -142,8 +142,17 @@ def manual_auth(username, hostname):
 # setup logging
 # ??question: does the log_to_file function creates the empty logfile or writes in the existing one?
 # question??
+"""
+!!answer: The file upened with log_to_file is opened using open(filename, "a") python standard command
+according to its definition in paramiko/util.py. The file opened this way is being created if it doesn't
+exist or the contents are being written at the file's end if the file already exists. answer!!
+"""
 # ??question: is it possible to select a custom logfile name by user input in log_to_file?
 # question??
+"""
+!!answer It is possible to do it using the log_to_file function. All you need is to specify the desired filename
+as an argument for the function. For example, your code can look like that: `paramiko.util.log_to_file("my.filename")`. answer!!
+"""
 paramiko.util.log_to_file("demo.log")
 
 username = ""
@@ -158,6 +167,10 @@ if len(hostname) == 0:
     sys.exit(1)
 # ??question: is it possible to select the custom port value by user input in port variable?
 # question??
+"""
+!!answer It is possible to do it using port variable. All you need to do is to specify the desired port as an integer value 
+for the function. For example, your code can look like that: `port = 42`. answer!!
+"""
 port = 22
 if hostname.find(":") >= 0:
     hostname, portstr = hostname.split(":")
@@ -167,6 +180,10 @@ if hostname.find(":") >= 0:
 try:
     # ??question: what is the default value of sock?
     # question??
+    """
+    !!answer According to Python documentation socket.socket creates a new object of socket.socket class 
+    with family set to AddressFamily.AF_INET and type set to SocketKind.SOCK_STREAM which becomes the default value of sock. answer!!
+    """
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect((hostname, port))
 except Exception as e:
@@ -179,6 +196,10 @@ try:
     try:
         # ??question: what is the successful result of start_client function?
         # question??
+        """
+        !!answer According to the definition of start_client in paramiko/transport.py this function negotiates a new SSH2 session
+        as client. It can raise an exception but has no return value. answer!!
+        """
         t.start_client()
     except paramiko.SSHException:
         print("*** SSH negotiation failed.")
@@ -213,6 +234,13 @@ try:
     if username == "":
         # ??question: what is the default value of default_username?
         # question??
+        """
+        !!answer According to the documentation of getpass module, this value returnes the "login name" of the user. 
+        This function checks the environment variables LOGNAME, USER, LNAME and USERNAME, in order, and returns the 
+        value of the first one which is set to a non-empty string. If none are set, the login name from the password 
+        database is returned on systems which support the pwd module, otherwise, an exception is raised.
+        This means that the default value of default_user will be its login name if exists. answer!!
+        """
         default_username = getpass.getuser()
         username = input("Username [%s]: " % default_username)
         if len(username) == 0:
@@ -228,6 +256,10 @@ try:
 
     # ??question: what is the type of chan?
     # question??
+    """
+    !!answer The type of chan is the object of Channel class defined in paramiko/channel.py as the return type of open_session function
+    has this type. answer!!
+    """
     chan = t.open_session()
     chan.get_pty()
     chan.invoke_shell()
